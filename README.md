@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# uzmanumre_web
 
-## Getting Started
+uzmanumre.com / uzmanumre.com.tr — Uzman Umre uygulamasının çok dilli tanıtım sitesi.
 
-First, run the development server:
+- **Stack:** Next.js 16 (App Router, Turbopack) · Tailwind CSS v4 · shadcn/ui (base-nova)
+- **Diller:** `/` TR · `/en` · `/de` · `/nl` · `/fr` · `/ru` · `/ar` (RTL) — hepsi SSG, hreflang otomatik
+- **İçerik sözlükleri:** `lib/locales/*.ts` (tek şema: `lib/i18n.ts` → `Dict`)
+
+## Lokal geliştirme
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev          # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Docker (yalnızca lokal — prod'da Docker YOK)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd docker
+docker compose up -d           # web (3400) + postgres (5433) + redis (6380)
+docker compose up -d db redis  # ileride admin/API için sadece altyapı
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+DB ve Redis şu an site tarafından kullanılmıyor; ileride eklenecek admin/API için hazır.
 
-## Learn More
+## Prod
 
-To learn more about Next.js, take a look at the following resources:
+pm2 (veya systemd) + nginx, port **3302**. Adım adım: [deploy/DEPLOY.md](deploy/DEPLOY.md)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Yapı
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/            → / (TR) ve /[lang] rotaları
+components/site → navbar, hero, phone (CSS mockuplar), features, showcase, tours, faq, footer, mobile-bar
+lib/locales     → tr, en, de, nl, fr, ru, ar sözlükleri
+deploy/         → nginx conf, pm2 ecosystem, systemd unit, DEPLOY.md
+docker/         → lokal compose (web + postgres + redis)
+public/brand    → app-icon, uzman-logo · public/umre-rehberi.pdf
+```

@@ -1,0 +1,20 @@
+# systemd alternatifi (pm2 yerine tercih edilirse):
+#   sudo cp deploy/uzmanumre-web.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now uzmanumre-web
+[Unit]
+Description=Uzman Umre web (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/uzman-web
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -p 3302
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=3302
+User=root
+
+[Install]
+WantedBy=multi-user.target

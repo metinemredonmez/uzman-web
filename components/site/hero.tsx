@@ -6,6 +6,23 @@ import type { Dict } from "@/lib/i18n";
 export function Hero({ d, store }: { d: Dict["hero"]; store: Dict["store"] }) {
   return (
     <section className="bg-arabesque relative overflow-hidden bg-navy-950">
+      {/* Kâbe tavaf arka plan videosu — dosyayı public/media/kabe-tavaf.mp4
+          olarak ekleyin (10-20 sn'lik döngü, H.264, ~8-10 MB önerilir).
+          Dosya yokken desenli zemin görünmeye devam eder; mobilde veri
+          tasarrufu için video yüklenmez. */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden
+        className="absolute inset-0 hidden size-full object-cover opacity-30 motion-reduce:hidden sm:block"
+      >
+        <source src="/media/kabe-tavaf.mp4" type="video/mp4" />
+      </video>
+      {/* Okunabilirlik için koyu overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-950/60 to-navy-950/95" />
       <div className="pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-navy-700/40 blur-[140px]" />
       <div className="pointer-events-none absolute -bottom-24 end-[-100px] size-[420px] rounded-full bg-gold-600/10 blur-[120px]" />
 
